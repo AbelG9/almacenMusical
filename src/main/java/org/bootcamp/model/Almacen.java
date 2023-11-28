@@ -17,8 +17,8 @@ public class Almacen {
 
     }
 
-    public void showAllArt(){
-
+    public List<AlmacenArticulo> showAllArt(){
+        return null;
     }
 
     public void loanArt(int articuloID, int userID){

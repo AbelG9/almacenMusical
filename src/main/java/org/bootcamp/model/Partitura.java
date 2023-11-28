@@ -1,35 +1,24 @@
 package org.bootcamp.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class Partituras extends AlmacenArticulo{
+@Data
+@NoArgsConstructor
+public class Partitura extends AlmacenArticulo{
     private String autor;
     private int duration;
 
-    public Partituras(int articuloID, String nombreArticulo, Boolean isLoaned, String autor, int duration) {
+    public Partitura(int articuloID, String nombreArticulo, Boolean isLoaned, String autor, int duration) {
         super(articuloID, nombreArticulo, isLoaned);
         this.autor = autor;
         this.duration = duration;
     }
 
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
     @Override
     public void showDetails() {
+        System.out.println("--------------------------------------------");
+        System.out.println("Partitura");
         System.out.println("--------------------------------------------");
         System.out.println("ArticuloID: " + articuloID);
         System.out.println("Nombre del articulo: " + nombreArticulo);

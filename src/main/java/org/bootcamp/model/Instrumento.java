@@ -1,28 +1,23 @@
 package org.bootcamp.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class Instrumentos extends AlmacenArticulo{
+@Data
+@NoArgsConstructor
+public class Instrumento extends AlmacenArticulo{
 
     private String desDueño;
 
-    public Instrumentos(int articuloID, String nombreArticulo, Boolean isLoaned, String desDueño) {
+    public Instrumento(int articuloID, String nombreArticulo, Boolean isLoaned, String desDueño) {
         super(articuloID, nombreArticulo, isLoaned);
-        this.desDueño = desDueño;
-    }
-
-    public String getDesDueño() {
-        return desDueño;
-    }
-
-    public void setDesDueño(String desDueño) {
         this.desDueño = desDueño;
     }
 
     @Override
     public void showDetails(){
+        System.out.println("--------------------------------------------");
+        System.out.println("Instrumento");
         System.out.println("--------------------------------------------");
         System.out.println("ArticuloID: " + articuloID);
         System.out.println("Nombre del articulo: " + nombreArticulo);
