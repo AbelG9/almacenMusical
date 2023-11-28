@@ -37,6 +37,7 @@ public class Main {
             System.out.println("--------------------------------------------");
             System.out.println("Ingrese 1 para ver los articulos disponibles");
             System.out.println("Ingrese 2 para añadir nuevos artículos al almacen");
+            System.out.println("Ingrese 3 para prestar un articulo");
             System.out.println("--------------------------------------------");
 
             int option = sc.nextInt();
@@ -76,11 +77,14 @@ public class Main {
                             partitura.setDuration(duracion);
                             partituraService.addPartitura(partitura);
                             break;
-                        default:
-                            System.out.println("Opcion no valida");
-                            break;
                     }
                     break;
+                case 3:
+                    System.out.println("Ingrese el id del usuario");
+                    int idUsuario = sc.nextInt();
+                    System.out.println("Ingrese el id del articulo");
+                    int idArticulo = sc.nextInt();
+                    almacenArticuloService.loanArt(idArticulo, idUsuario);
                 default:
                     System.out.println("Ingrese una opcion correcta");
                     break;

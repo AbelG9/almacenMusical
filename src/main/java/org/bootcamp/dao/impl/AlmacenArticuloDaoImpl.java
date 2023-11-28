@@ -76,4 +76,27 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     public void deleteArticulo(int id) {
 
     }
+
+    @Override
+    public void loanArticulo(int articuloID, int userID) {
+        try{
+            String sql = "insert into prestamos (usuario, articulo, estado) values (?,?,?)";
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setInt(1, userID);
+            psmt.setInt(2, articuloID);
+            psmt.setInt(3, 1);
+            psmt.executeUpdate();
+
+            String sql2 = "update articulos set isLoaned = ? where articulo_id = ?";
+            PreparedStatement psmt2 = connection.prepareStatement(sql2);
+            psmt2.setBoolean(1,true);
+            psmt2.setInt(2, articuloID);
+            psmt2.executeUpdate();
+
+            System.out.println("Articulo prestado exitosamente");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
 }

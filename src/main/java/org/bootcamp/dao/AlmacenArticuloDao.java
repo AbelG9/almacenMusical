@@ -12,4 +12,6 @@ public interface AlmacenArticuloDao {
     public List<AlmacenArticulo> showAllArticulos();
 
     public void deleteArticulo(int id);
+
+    public void loanArticulo(int articuloID, int userID);
 }
