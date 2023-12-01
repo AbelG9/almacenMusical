@@ -15,7 +15,7 @@ public class AlmacenArticuloServiceImpl implements AlmacenArticuloService {
 
     @Override
     public void addArt(AlmacenArticulo almacenArticulo) {
-
+        almacenArticuloDao.addArt(almacenArticulo);
     }
 
     @Override

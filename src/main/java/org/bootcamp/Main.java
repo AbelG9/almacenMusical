@@ -1,20 +1,14 @@
 package org.bootcamp;
 
 import org.bootcamp.dao.impl.AlmacenArticuloDaoImpl;
-import org.bootcamp.dao.impl.InstrumentoDaoImpl;
-import org.bootcamp.dao.impl.PartituraDaoImpl;
 import org.bootcamp.dao.impl.UserDaoImpl;
 import org.bootcamp.model.AlmacenArticulo;
 import org.bootcamp.model.Instrumento;
 import org.bootcamp.model.Partitura;
 import org.bootcamp.model.User;
 import org.bootcamp.service.AlmacenArticuloService;
-import org.bootcamp.service.InstrumentoService;
-import org.bootcamp.service.PartituraService;
 import org.bootcamp.service.UserService;
 import org.bootcamp.service.impl.AlmacenArticuloServiceImpl;
-import org.bootcamp.service.impl.InstrumentoServiceImpl;
-import org.bootcamp.service.impl.PartituraServiceImpl;
 import org.bootcamp.service.impl.UserServiceImpl;
 import org.bootcamp.utils.DbConnection;
 
@@ -28,8 +22,6 @@ public class Main {
         Connection connection = dbConnection.getConnection();
 
         AlmacenArticuloService almacenArticuloService = new AlmacenArticuloServiceImpl(new AlmacenArticuloDaoImpl(connection));
-        InstrumentoService instrumentoService = new InstrumentoServiceImpl(new InstrumentoDaoImpl(connection));
-        PartituraService partituraService = new PartituraServiceImpl(new PartituraDaoImpl(connection));
         UserService userService = new UserServiceImpl(new UserDaoImpl(connection));
 
         Scanner sc = new Scanner(System.in);
@@ -102,7 +94,8 @@ public class Main {
                             instrumento.setNombreArticulo(nombre);
                             instrumento.setIsLoaned(false);
                             instrumento.setDesDueño(dueño);
-                            instrumentoService.addInstrumento(instrumento);
+                            instrumento.setTipoArticulo("Instrumento");
+                            almacenArticuloService.addArt(instrumento);
                             break;
                         case 2:
                             Partitura partitura = new Partitura();
@@ -116,7 +109,8 @@ public class Main {
                             partitura.setIsLoaned(false);
                             partitura.setAutor(autor);
                             partitura.setDuration(duracion);
-                            partituraService.addPartitura(partitura);
+                            partitura.setTipoArticulo("Partitura");
+                            almacenArticuloService.addArt(partitura);
                             break;
                     }
                     break;

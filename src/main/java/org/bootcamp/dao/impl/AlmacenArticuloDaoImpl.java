@@ -6,13 +6,10 @@ import org.bootcamp.model.Instrumento;
 import org.bootcamp.model.Partitura;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
@@ -24,7 +21,32 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
 
     @Override
     public void addArt(AlmacenArticulo almacenArticulo) {
+        try{
+            String sql = "insert into articulos (nombre, isLoaned, desDuenio, autor, duration, tipoArticulo, estado) values(?,?,?,?,?,?,?)";
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setString(1, almacenArticulo.getNombreArticulo());
+            psmt.setBoolean(2, false);
 
+            String tipoArticulo = almacenArticulo.getTipoArticulo();
+            if (tipoArticulo.equals("Instrumento")) {
+                Instrumento instrumento = (Instrumento) almacenArticulo;
+                psmt.setString(3, instrumento.getDesDueño());
+                psmt.setString(4, null);
+                psmt.setInt(5, 0);
+            } else if (tipoArticulo.equals("Partitura")){
+                Partitura partitura = (Partitura) almacenArticulo;
+                psmt.setString(3, null);
+                psmt.setString(4, partitura.getAutor());
+                psmt.setInt(5, partitura.getDuration());
+            }
+            psmt.setString(6, tipoArticulo);
+            psmt.setInt(7, 1);
+            psmt.executeUpdate();
+            System.out.println(tipoArticulo + " ingresado correctamente");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
