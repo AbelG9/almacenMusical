@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     private Connection connection;  //conexion bd
@@ -98,5 +99,51 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public AlmacenArticulo returnItemById(int articuloID) {
+        try{
+            String sql = "select * from articulos where articulo_id = ? and estado = ?";
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setInt(1, articuloID);
+            psmt.setInt(2, 1);
+            ResultSet resultSet = psmt.executeQuery();
+            AlmacenArticulo articulo;
+            while(resultSet.next()){
+                int id = resultSet.getInt("articulo_id");
+                String nombre = resultSet.getString("nombre");
+                boolean isLoaned = resultSet.getBoolean("isLoaned");
+                String itemType = resultSet.getString("tipoArticulo");
+
+                if(itemType.equals("Instrumento")){
+                    String desDueño = resultSet.getString("desDuenio");
+
+                    Instrumento instrumento = new Instrumento();
+                    instrumento.setArticuloID(id);
+                    instrumento.setNombreArticulo(nombre);
+                    instrumento.setIsLoaned(isLoaned);
+                    instrumento.setDesDueño(desDueño);
+                    return instrumento;
+                }
+                else if (itemType.equals("Partitura")){
+                    String autor = resultSet.getString("autor");
+                    int duration = resultSet.getInt("duration");
+
+                    Partitura partitura = new Partitura();
+                    partitura.setArticuloID(id);
+                    partitura.setNombreArticulo(nombre);
+                    partitura.setIsLoaned(isLoaned);
+                    partitura.setAutor(autor);
+                    partitura.setDuration(duration);
+                    return partitura;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

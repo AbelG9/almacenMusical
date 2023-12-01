@@ -44,4 +44,9 @@ public class AlmacenArticuloServiceImpl implements AlmacenArticuloService {
     public void returnArt(int articuloID, int userID) {
 
     }
+
+    @Override
+    public AlmacenArticulo returnItemById(int articuloID) {
+        return almacenArticuloDao.returnItemById(articuloID);
+    }
 }

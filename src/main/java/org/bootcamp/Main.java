@@ -42,11 +42,13 @@ public class Main {
             System.out.println("--------------------------------------------");
             System.out.println("Ingrese 1 para ver los articulos disponibles");
             System.out.println("Ingrese 2 para ver los usuarios disponibles");
-            System.out.println("Ingrese 3 para añadir nuevos artículos al almacen");
-            System.out.println("Ingrese 4 para prestar un articulo");
+            System.out.println("Ingrese 3 para ver la informacion de un articulo");
+            System.out.println("Ingrese 4 para añadir nuevos artículos al almacen");
+            System.out.println("Ingrese 5 para prestar un articulo");
             System.out.println("--------------------------------------------");
 
             int option = sc.nextInt();
+            int idAlmacenArticulo;
             switch (option) {
                 case 1:
                     List<AlmacenArticulo> articuloList = almacenArticuloService.showAllArticulos();
@@ -61,6 +63,16 @@ public class Main {
                     }
                     break;
                 case 3:
+                    System.out.println("Ingrese el id del articulo");
+                    idAlmacenArticulo = sc.nextInt();
+                    AlmacenArticulo articulo = almacenArticuloService.returnItemById(idAlmacenArticulo);
+                    if (articulo.getArticuloID() != 0) {
+                        articulo.showDetails();
+                    } else {
+                        System.out.println("No existe el articulo solicitado");
+                    }
+                    break;
+                case 4:
                     System.out.println("Ingrese el tipo de articulo (1 para Instrumento, 2 para Partitura)");
                     int tipo = sc.nextInt();
                     switch (tipo){
@@ -91,7 +103,7 @@ public class Main {
                             break;
                     }
                     break;
-                case 4:
+                case 5:
                     System.out.println("Ingrese el id del usuario");
                     int idUsuario = sc.nextInt();
                     System.out.println("Ingrese el id del articulo");
