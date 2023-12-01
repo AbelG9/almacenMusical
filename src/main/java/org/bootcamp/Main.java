@@ -48,6 +48,7 @@ public class Main {
             System.out.println("Ingrese 7 para prestar un articulo");
             System.out.println("Ingrese 8 para devolver un articulo");
             System.out.println("Ingrese 9 para modificar un articulo");
+            System.out.println("Ingrese 10 para modificar un usuario");
             System.out.println("--------------------------------------------");
 
             int option = sc.nextInt();
@@ -214,6 +215,26 @@ public class Main {
                             almacenArticuloService.updateArt(partitura);
                             break;
                     }
+                    break;
+                case 10:
+                    System.out.println("Ingrese el id del usuario");
+                    idUser = sc.nextInt();
+
+                    User userEdit = userService.findUserById(idUser);
+                    if (userEdit.getUserID() == 0){
+                        System.out.println("Ingrese un usuario valido");
+                        break;
+                    }
+                    userEdit.showUserDetails();
+                    System.out.println("--------------------------------------------");
+                    System.out.println("Ingrese los nuevos datos del usuario");
+                    System.out.println("--------------------------------------------");
+                    System.out.println("Ingrese el nombre del usuario");
+                    String newUserNombre = sc.next();
+
+                    userEdit.setNombre(newUserNombre);
+
+                    userService.editUser(userEdit);
                     break;
                 default:
                     System.out.println("Ingrese una opcion correcta");
