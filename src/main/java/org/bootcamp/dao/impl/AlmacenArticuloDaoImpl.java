@@ -30,7 +30,7 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     }
 
     @Override
-    public List<AlmacenArticulo> showAllArticulos() {
+    public List<AlmacenArticulo> showAllArt() {
         try{
             String sql = "select * from articulos";
             PreparedStatement psmt = connection.prepareStatement(sql);
@@ -79,7 +79,7 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     }
 
     @Override
-    public void loanArticulo(int articuloID, int userID) {
+    public void loanArt(int articuloID, int userID) {
         try{
             String sql = "insert into prestamos (usuario, articulo, estado) values (?,?,?)";
             PreparedStatement psmt = connection.prepareStatement(sql);
@@ -102,7 +102,7 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     }
 
     @Override
-    public AlmacenArticulo returnItemById(int articuloID) {
+    public AlmacenArticulo returnArtById(int articuloID) {
         try{
             String sql = "select * from articulos where articulo_id = ? and estado = ?";
             PreparedStatement psmt = connection.prepareStatement(sql);

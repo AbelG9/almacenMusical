@@ -1,6 +1,5 @@
 package org.bootcamp;
 
-import org.bootcamp.dao.AlmacenArticuloDao;
 import org.bootcamp.dao.impl.AlmacenArticuloDaoImpl;
 import org.bootcamp.dao.impl.InstrumentoDaoImpl;
 import org.bootcamp.dao.impl.PartituraDaoImpl;
@@ -54,7 +53,7 @@ public class Main {
             int idUsuario;
             switch (option) {
                 case 1:
-                    List<AlmacenArticulo> articuloList = almacenArticuloService.showAllArticulos();
+                    List<AlmacenArticulo> articuloList = almacenArticuloService.showAllArt();
                     for(AlmacenArticulo articulo: articuloList){
                         articulo.showDetails();
                     }
@@ -68,7 +67,7 @@ public class Main {
                 case 3:
                     System.out.println("Ingrese el id del articulo");
                     idAlmacenArticulo = sc.nextInt();
-                    AlmacenArticulo articulo = almacenArticuloService.returnItemById(idAlmacenArticulo);
+                    AlmacenArticulo articulo = almacenArticuloService.returnArtById(idAlmacenArticulo);
                     if (articulo.getArticuloID() != 0) {
                         articulo.showDetails();
                     } else {
@@ -127,9 +126,28 @@ public class Main {
                 case 7:
                     System.out.println("Ingrese el id del usuario");
                     idUsuario = sc.nextInt();
+
+                    User userFind = userService.findUserById(idUsuario);
+                    if (userFind.getUserID() == 0){
+                        System.out.println("Ingrese un usuario valido");
+                        break;
+                    }
+
                     System.out.println("Ingrese el id del articulo");
                     idAlmacenArticulo = sc.nextInt();
+
+                    AlmacenArticulo articuloFind = almacenArticuloService.returnArtById(idAlmacenArticulo);
+                    if (articuloFind.getArticuloID() == 0){
+                        System.out.println("Ingrese un articulo valido");
+                        break;
+                    }
+                    if (articuloFind.getIsLoaned()){
+                        System.out.println("El articulo ya esta prestado a otro usuario");
+                        break;
+                    }
                     almacenArticuloService.loanArt(idAlmacenArticulo, idUsuario);
+                    break;
+
                 default:
                     System.out.println("Ingrese una opcion correcta");
                     break;

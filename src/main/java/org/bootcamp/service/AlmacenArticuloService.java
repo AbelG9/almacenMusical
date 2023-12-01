@@ -9,7 +9,7 @@ public interface AlmacenArticuloService {
 
     public void updateArticulo(AlmacenArticulo almacenArticulo);
 
-    public List<AlmacenArticulo> showAllArticulos();
+    public List<AlmacenArticulo> showAllArt();
 
     public void deleteArticulo(int id);
 
@@ -17,5 +17,5 @@ public interface AlmacenArticuloService {
 
     public void returnArt(int articuloID, int userID);
 
-    public AlmacenArticulo returnItemById(int articuloID);
+    public AlmacenArticulo returnArtById(int articuloID);
 }
