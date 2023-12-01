@@ -50,6 +50,7 @@ public class Main {
             System.out.println("Ingrese 9 para modificar un articulo");
             System.out.println("Ingrese 10 para modificar un usuario");
             System.out.println("Ingrese 11 para eliminar un articulo");
+            System.out.println("Ingrese 12 para eliminar un usuario");
             System.out.println("--------------------------------------------");
 
             int option = sc.nextInt();
@@ -245,6 +246,17 @@ public class Main {
                         break;
                     }
                     almacenArticuloService.deleteArt(articuloDelete.getArticuloID());
+                    break;
+                case 12:
+                    System.out.println("Ingrese el id del usuario");
+                    idUser = sc.nextInt();
+
+                    User userDelete = userService.findUserById(idUser);
+                    if (userDelete.getUserID() == 0){
+                        System.out.println("Ingrese un usuario valido");
+                        break;
+                    }
+                    userService.deleteUser(userDelete.getUserID());
                     break;
                 default:
                     System.out.println("Ingrese una opcion correcta");

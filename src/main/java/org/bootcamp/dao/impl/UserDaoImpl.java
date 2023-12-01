@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class UserDaoImpl implements UserDao {
     private Connection connection;  //conexion bd
@@ -80,6 +81,23 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void deleteUser(int id) {
+        System.out.println("Esta seguro de eliminar este usuario? (1: Si, 2: No)");
+        Scanner sc = new Scanner(System.in);
+        int option = sc.nextInt();
+
+        if(option != 1) return;
+        try{
+            String sql = "update usuarios set estado = ? where usuario_id = ?";
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setInt(1, 0);
+            psmt.setInt(2, id);
+            psmt.executeUpdate();
+
+            System.out.println("Usuario eliminado exitosamente");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
