@@ -9,8 +9,8 @@ public class Partitura extends AlmacenArticulo{
     private String autor;
     private int duration;
 
-    public Partitura(int articuloID, String nombreArticulo, Boolean isLoaned, String autor, int duration) {
-        super(articuloID, nombreArticulo, isLoaned);
+    public Partitura(int articuloID, String nombreArticulo, Boolean isLoaned, String tipoArticulo, String autor, int duration) {
+        super(articuloID, nombreArticulo, isLoaned, tipoArticulo);
         this.autor = autor;
         this.duration = duration;
     }

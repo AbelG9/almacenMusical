@@ -27,8 +27,32 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     }
 
     @Override
-    public void updateArticulo(AlmacenArticulo almacenArticulo) {
+    public void updateArt(AlmacenArticulo almacenArticulo) {
+        try{
+            String sql = "update articulos set nombre = ?, desDuenio = ?, autor = ?, duration = ? where articulo_id = ?";
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setString(1, almacenArticulo.getNombreArticulo());
 
+            String tipoArticulo = almacenArticulo.getTipoArticulo();
+            if (tipoArticulo.equals("Instrumento")) {
+                Instrumento instrumento = (Instrumento) almacenArticulo;
+                psmt.setString(2, instrumento.getDesDueño());
+                psmt.setString(3, null);
+                psmt.setInt(4, 0);
+            } else if (tipoArticulo.equals("Partitura")){
+                Partitura partitura = (Partitura) almacenArticulo;
+                psmt.setString(2, null);
+                psmt.setString(3, partitura.getAutor());
+                psmt.setInt(4, partitura.getDuration());
+            }
+            psmt.setInt(5, almacenArticulo.getArticuloID());
+            psmt.executeUpdate();
+
+            System.out.println("Articulo editado exitosamente");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -53,6 +77,7 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
                         instrumento.setNombreArticulo(nombre);
                         instrumento.setIsLoaned(isLoaned);
                         instrumento.setDesDueño(desDueño);
+                        instrumento.setTipoArticulo(tipoArticulo);
                         articulos.add(instrumento);
                         break;
                     case "Partitura":
@@ -62,6 +87,7 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
                         partitura.setIsLoaned(isLoaned);
                         partitura.setAutor(autor);
                         partitura.setDuration(duration);
+                        partitura.setTipoArticulo(tipoArticulo);
                         articulos.add(partitura);
                         break;
                 }
@@ -150,6 +176,7 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
                     instrumento.setNombreArticulo(nombre);
                     instrumento.setIsLoaned(isLoaned);
                     instrumento.setDesDueño(desDueño);
+                    instrumento.setTipoArticulo(itemType);
                     return instrumento;
                 }
                 else if (itemType.equals("Partitura")){
@@ -162,6 +189,7 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
                     partitura.setIsLoaned(isLoaned);
                     partitura.setAutor(autor);
                     partitura.setDuration(duration);
+                    partitura.setTipoArticulo(itemType);
                     return partitura;
                 }
             }

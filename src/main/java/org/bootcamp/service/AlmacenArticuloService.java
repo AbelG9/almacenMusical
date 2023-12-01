@@ -7,7 +7,7 @@ import java.util.List;
 public interface AlmacenArticuloService {
     public void addArticulo(AlmacenArticulo almacenArticulo);
 
-    public void updateArticulo(AlmacenArticulo almacenArticulo);
+    public void updateArt(AlmacenArticulo almacenArticulo);
 
     public List<AlmacenArticulo> showAllArt();
 

@@ -9,8 +9,8 @@ public class Instrumento extends AlmacenArticulo{
 
     private String desDueño;
 
-    public Instrumento(int articuloID, String nombreArticulo, Boolean isLoaned, String desDueño) {
-        super(articuloID, nombreArticulo, isLoaned);
+    public Instrumento(int articuloID, String nombreArticulo, Boolean isLoaned, String tipoArticulo, String desDueño) {
+        super(articuloID, nombreArticulo, isLoaned, tipoArticulo);
         this.desDueño = desDueño;
     }
 

@@ -47,11 +47,12 @@ public class Main {
             System.out.println("Ingrese 6 para agregar un nuevo usuario");
             System.out.println("Ingrese 7 para prestar un articulo");
             System.out.println("Ingrese 8 para devolver un articulo");
+            System.out.println("Ingrese 9 para modificar un articulo");
             System.out.println("--------------------------------------------");
 
             int option = sc.nextInt();
-            int idAlmacenArticulo;
-            int idUsuario;
+            int idArt;
+            int idUser;
             switch (option) {
                 case 1:
                     List<AlmacenArticulo> articuloList = almacenArticuloService.showAllArt();
@@ -67,8 +68,8 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("Ingrese el id del articulo");
-                    idAlmacenArticulo = sc.nextInt();
-                    AlmacenArticulo articulo = almacenArticuloService.findArtById(idAlmacenArticulo);
+                    idArt = sc.nextInt();
+                    AlmacenArticulo articulo = almacenArticuloService.findArtById(idArt);
                     if (articulo.getArticuloID() != 0) {
                         articulo.showDetails();
                     } else {
@@ -77,8 +78,8 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("Ingrese el id del usuario");
-                    idUsuario = sc.nextInt();
-                    User user = userService.findUserById(idUsuario);
+                    idUser = sc.nextInt();
+                    User user = userService.findUserById(idUser);
                     if (user.getUserID() != 0) {
                         user.showUserDetails();
                     } else {
@@ -126,18 +127,18 @@ public class Main {
                     break;
                 case 7:
                     System.out.println("Ingrese el id del usuario");
-                    idUsuario = sc.nextInt();
+                    idUser = sc.nextInt();
 
-                    User userFind = userService.findUserById(idUsuario);
+                    User userFind = userService.findUserById(idUser);
                     if (userFind.getUserID() == 0){
                         System.out.println("Ingrese un usuario valido");
                         break;
                     }
 
                     System.out.println("Ingrese el id del articulo");
-                    idAlmacenArticulo = sc.nextInt();
+                    idArt = sc.nextInt();
 
-                    AlmacenArticulo articuloFind = almacenArticuloService.findArtById(idAlmacenArticulo);
+                    AlmacenArticulo articuloFind = almacenArticuloService.findArtById(idArt);
                     if (articuloFind.getArticuloID() == 0){
                         System.out.println("Ingrese un articulo valido");
                         break;
@@ -146,22 +147,22 @@ public class Main {
                         System.out.println("El articulo ya esta prestado a otro usuario");
                         break;
                     }
-                    almacenArticuloService.loanArt(idAlmacenArticulo, idUsuario);
+                    almacenArticuloService.loanArt(idArt, idUser);
                     break;
                 case 8:
                     System.out.println("Ingrese el id del usuario");
-                    idUsuario = sc.nextInt();
+                    idUser = sc.nextInt();
 
-                    User userFound = userService.findUserById(idUsuario);
+                    User userFound = userService.findUserById(idUser);
                     if (userFound.getUserID() == 0){
                         System.out.println("Ingrese un usuario valido");
                         break;
                     }
 
                     System.out.println("Ingrese el id del articulo");
-                    idAlmacenArticulo = sc.nextInt();
+                    idArt = sc.nextInt();
 
-                    AlmacenArticulo articuloFound = almacenArticuloService.findArtById(idAlmacenArticulo);
+                    AlmacenArticulo articuloFound = almacenArticuloService.findArtById(idArt);
                     if (articuloFound.getArticuloID() == 0){
                         System.out.println("Ingrese un articulo valido");
                         break;
@@ -171,7 +172,48 @@ public class Main {
                         System.out.println("El articulo no esta prestado");
                         break;
                     }
-                    almacenArticuloService.returnArt(idAlmacenArticulo, idUsuario);
+                    almacenArticuloService.returnArt(idArt, idUser);
+                    break;
+                case 9:
+                    System.out.println("Ingrese el id del articulo a modificar");
+                    idArt = sc.nextInt();
+
+                    AlmacenArticulo articuloEdit = almacenArticuloService.findArtById(idArt);
+                    if (articuloEdit == null || articuloEdit.getArticuloID() == 0){
+                        System.out.println("Ingrese un id de articulo valido");
+                        break;
+                    }
+                    articuloEdit.showDetails();
+
+                    System.out.println("--------------------------------------------");
+                    System.out.println("Ingrese los nuevos datos del articulo");
+                    System.out.println("--------------------------------------------");
+                    String tipoArt = articuloEdit.getTipoArticulo();
+                    switch (tipoArt){
+                        case "Instrumento":
+                            Instrumento instrumento = (Instrumento) articuloEdit;
+                            System.out.println("Ingrese el nuevo nombre del instrumento");
+                            String nombreArt = sc.next();
+                            System.out.println("Ingrese el nuevo nombre del dueño");
+                            String dueño = sc.next();
+                            instrumento.setNombreArticulo(nombreArt);
+                            instrumento.setDesDueño(dueño);
+                            almacenArticuloService.updateArt(instrumento);
+                            break;
+                        case "Partitura":
+                            Partitura partitura = (Partitura) articuloEdit;
+                            System.out.println("Ingrese el nuevo nombre de la partitura");
+                            String nombreArticulo = sc.next();
+                            System.out.println("Ingrese el nuevo nombre del autor");
+                            String autor = sc.next();
+                            System.out.println("Ingrese la nueva duracion de la partitura");
+                            int duracion = sc.nextInt();
+                            partitura.setNombreArticulo(nombreArticulo);
+                            partitura.setAutor(autor);
+                            partitura.setDuration(duracion);
+                            almacenArticuloService.updateArt(partitura);
+                            break;
+                    }
                     break;
                 default:
                     System.out.println("Ingrese una opcion correcta");

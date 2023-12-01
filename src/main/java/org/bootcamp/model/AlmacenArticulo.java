@@ -11,6 +11,7 @@ public abstract class AlmacenArticulo {
     protected int articuloID;
     protected String nombreArticulo;
     protected Boolean isLoaned;
+    protected String tipoArticulo;
 
     public abstract void showDetails();
 }
