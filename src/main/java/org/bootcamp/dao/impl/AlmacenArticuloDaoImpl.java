@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     private Connection connection;  //conexion bd
@@ -22,7 +23,7 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     }
 
     @Override
-    public void addArticulo(AlmacenArticulo almacenArticulo) {
+    public void addArt(AlmacenArticulo almacenArticulo) {
 
     }
 
@@ -58,8 +59,9 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     @Override
     public List<AlmacenArticulo> showAllArt() {
         try{
-            String sql = "select * from articulos";
+            String sql = "select * from articulos where estado = ?";
             PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setInt(1, 1);
             ResultSet resultSet = psmt.executeQuery();
             List<AlmacenArticulo> articulos = new ArrayList<>();
             while(resultSet.next()){
@@ -102,8 +104,24 @@ public class AlmacenArticuloDaoImpl implements AlmacenArticuloDao {
     }
 
     @Override
-    public void deleteArticulo(int id) {
+    public void deleteArt(int id) {
+        System.out.println("Esta seguro de eliminar este articulo? (1: Si, 2: No)");
+        Scanner sc = new Scanner(System.in);
+        int option = sc.nextInt();
 
+        if(option != 1) return;
+        try{
+            String sql = "update articulos set estado = ? where articulo_id = ?";
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setInt(1, 0);
+            psmt.setInt(2, id);
+            psmt.executeUpdate();
+
+            System.out.println("Articulo eliminado exitosamente");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override

@@ -14,7 +14,7 @@ public class AlmacenArticuloServiceImpl implements AlmacenArticuloService {
     }
 
     @Override
-    public void addArticulo(AlmacenArticulo almacenArticulo) {
+    public void addArt(AlmacenArticulo almacenArticulo) {
 
     }
 
@@ -29,8 +29,8 @@ public class AlmacenArticuloServiceImpl implements AlmacenArticuloService {
     }
 
     @Override
-    public void deleteArticulo(int id) {
-
+    public void deleteArt(int id) {
+        almacenArticuloDao.deleteArt(id);
     }
 
     @Override
