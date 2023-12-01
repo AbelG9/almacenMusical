@@ -61,6 +61,28 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserById(int userID) {
+        try{
+            String sql = "select * from usuarios where usuario_id = ? and estado = ?";
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setInt(1, userID);
+            psmt.setInt(2, 1);
+            ResultSet resultSet = psmt.executeQuery();
+            User user = new User();
+            while (resultSet.next()){
+                int id = resultSet.getInt("usuario_id");
+                String nombre = resultSet.getString("nombre");
+
+                List<AlmacenArticulo> articuloList = new ArrayList<>();
+
+                user.setUserID(id);
+                user.setNombre(nombre);
+                user.setArticuloList(articuloList);
+            }
+            return user;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return null;
     }
 }

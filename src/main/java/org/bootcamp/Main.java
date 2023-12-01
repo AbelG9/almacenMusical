@@ -43,12 +43,14 @@ public class Main {
             System.out.println("Ingrese 1 para ver los articulos disponibles");
             System.out.println("Ingrese 2 para ver los usuarios disponibles");
             System.out.println("Ingrese 3 para ver la informacion de un articulo");
-            System.out.println("Ingrese 4 para añadir nuevos artículos al almacen");
-            System.out.println("Ingrese 5 para prestar un articulo");
+            System.out.println("Ingrese 4 para ver la informacion de un usuario");
+            System.out.println("Ingrese 5 para añadir un nuevo artículo al almacen");
+            System.out.println("Ingrese 6 para prestar un articulo");
             System.out.println("--------------------------------------------");
 
             int option = sc.nextInt();
             int idAlmacenArticulo;
+            int idUsuario;
             switch (option) {
                 case 1:
                     List<AlmacenArticulo> articuloList = almacenArticuloService.showAllArticulos();
@@ -73,6 +75,16 @@ public class Main {
                     }
                     break;
                 case 4:
+                    System.out.println("Ingrese el id del usuario");
+                    idUsuario = sc.nextInt();
+                    User user = userService.findUserById(idUsuario);
+                    if (user.getUserID() != 0) {
+                        user.showUserDetails();
+                    } else {
+                        System.out.println("No existe el usuario solicitado");
+                    }
+                    break;
+                case 5:
                     System.out.println("Ingrese el tipo de articulo (1 para Instrumento, 2 para Partitura)");
                     int tipo = sc.nextInt();
                     switch (tipo){
@@ -103,12 +115,12 @@ public class Main {
                             break;
                     }
                     break;
-                case 5:
+                case 6:
                     System.out.println("Ingrese el id del usuario");
-                    int idUsuario = sc.nextInt();
+                    idUsuario = sc.nextInt();
                     System.out.println("Ingrese el id del articulo");
-                    int idArticulo = sc.nextInt();
-                    almacenArticuloService.loanArt(idArticulo, idUsuario);
+                    idAlmacenArticulo = sc.nextInt();
+                    almacenArticuloService.loanArt(idAlmacenArticulo, idUsuario);
                 default:
                     System.out.println("Ingrese una opcion correcta");
                     break;
