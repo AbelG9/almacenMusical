@@ -46,6 +46,7 @@ public class Main {
             System.out.println("Ingrese 5 para agregar un nuevo artículo");
             System.out.println("Ingrese 6 para agregar un nuevo usuario");
             System.out.println("Ingrese 7 para prestar un articulo");
+            System.out.println("Ingrese 8 para devolver un articulo");
             System.out.println("--------------------------------------------");
 
             int option = sc.nextInt();
@@ -67,7 +68,7 @@ public class Main {
                 case 3:
                     System.out.println("Ingrese el id del articulo");
                     idAlmacenArticulo = sc.nextInt();
-                    AlmacenArticulo articulo = almacenArticuloService.returnArtById(idAlmacenArticulo);
+                    AlmacenArticulo articulo = almacenArticuloService.findArtById(idAlmacenArticulo);
                     if (articulo.getArticuloID() != 0) {
                         articulo.showDetails();
                     } else {
@@ -136,7 +137,7 @@ public class Main {
                     System.out.println("Ingrese el id del articulo");
                     idAlmacenArticulo = sc.nextInt();
 
-                    AlmacenArticulo articuloFind = almacenArticuloService.returnArtById(idAlmacenArticulo);
+                    AlmacenArticulo articuloFind = almacenArticuloService.findArtById(idAlmacenArticulo);
                     if (articuloFind.getArticuloID() == 0){
                         System.out.println("Ingrese un articulo valido");
                         break;
@@ -147,7 +148,31 @@ public class Main {
                     }
                     almacenArticuloService.loanArt(idAlmacenArticulo, idUsuario);
                     break;
+                case 8:
+                    System.out.println("Ingrese el id del usuario");
+                    idUsuario = sc.nextInt();
 
+                    User userFound = userService.findUserById(idUsuario);
+                    if (userFound.getUserID() == 0){
+                        System.out.println("Ingrese un usuario valido");
+                        break;
+                    }
+
+                    System.out.println("Ingrese el id del articulo");
+                    idAlmacenArticulo = sc.nextInt();
+
+                    AlmacenArticulo articuloFound = almacenArticuloService.findArtById(idAlmacenArticulo);
+                    if (articuloFound.getArticuloID() == 0){
+                        System.out.println("Ingrese un articulo valido");
+                        break;
+                    }
+                    boolean loaned = articuloFound.getIsLoaned();
+                    if (!loaned){
+                        System.out.println("El articulo no esta prestado");
+                        break;
+                    }
+                    almacenArticuloService.returnArt(idAlmacenArticulo, idUsuario);
+                    break;
                 default:
                     System.out.println("Ingrese una opcion correcta");
                     break;

@@ -17,5 +17,5 @@ public interface AlmacenArticuloService {
 
     public void returnArt(int articuloID, int userID);
 
-    public AlmacenArticulo returnArtById(int articuloID);
+    public AlmacenArticulo findArtById(int articuloID);
 }

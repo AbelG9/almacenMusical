@@ -15,5 +15,7 @@ public interface AlmacenArticuloDao {
 
     public void loanArt(int articuloID, int userID);
 
-    public AlmacenArticulo returnArtById(int articuloID);
+    public void returnArt(int articuloID, int userID);
+
+    public AlmacenArticulo findArtById(int articuloID);
 }
