@@ -2,7 +2,12 @@ package org.bootcamp.dao.impl;
 
 import org.bootcamp.dao.UserDao;
 import org.bootcamp.model.AlmacenArticulo;
+import org.bootcamp.model.Prestamo;
 import org.bootcamp.model.User;
+import org.bootcamp.service.AlmacenArticuloService;
+import org.bootcamp.service.PrestamoService;
+import org.bootcamp.service.impl.AlmacenArticuloServiceImpl;
+import org.bootcamp.service.impl.PrestamoServiceImpl;
 import org.bootcamp.utils.DbConnection;
 
 import java.sql.Connection;
@@ -19,6 +24,8 @@ public class UserDaoImpl implements UserDao {
     public UserDaoImpl(Connection connection) {
         this.connection = connection;
     }
+    PrestamoService prestamoService = new PrestamoServiceImpl(new PrestamoDaoImpl(dbConnection));
+    AlmacenArticuloService articuloService = new AlmacenArticuloServiceImpl(new AlmacenArticuloDaoImpl(dbConnection));
 
     @Override
     public void addUser(User user) {
@@ -47,7 +54,13 @@ public class UserDaoImpl implements UserDao {
                 int id = resultSet.getInt("usuario_id");
                 String nombre = resultSet.getString("nombre");
 
+                List<Prestamo> prestamoList = prestamoService.getLoansByUserId(id);
+
                 List<AlmacenArticulo> articuloList = new ArrayList<>();
+                for(Prestamo prestamo: prestamoList){
+                    AlmacenArticulo articulo = articuloService.findArtById(prestamo.getArticulo());
+                    articuloList.add(articulo);
+                }
 
                 User user = new User();
                 user.setUserID(id);
@@ -113,7 +126,13 @@ public class UserDaoImpl implements UserDao {
                 int id = resultSet.getInt("usuario_id");
                 String nombre = resultSet.getString("nombre");
 
+                List<Prestamo> prestamoList = prestamoService.getLoansByUserId(id);
+
                 List<AlmacenArticulo> articuloList = new ArrayList<>();
+                for(Prestamo prestamo: prestamoList){
+                    AlmacenArticulo articulo = articuloService.findArtById(prestamo.getArticulo());
+                    articuloList.add(articulo);
+                }
 
                 user.setUserID(id);
                 user.setNombre(nombre);

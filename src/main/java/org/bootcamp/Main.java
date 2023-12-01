@@ -1,14 +1,14 @@
 package org.bootcamp;
 
 import org.bootcamp.dao.impl.AlmacenArticuloDaoImpl;
+import org.bootcamp.dao.impl.PrestamoDaoImpl;
 import org.bootcamp.dao.impl.UserDaoImpl;
-import org.bootcamp.model.AlmacenArticulo;
-import org.bootcamp.model.Instrumento;
-import org.bootcamp.model.Partitura;
-import org.bootcamp.model.User;
+import org.bootcamp.model.*;
 import org.bootcamp.service.AlmacenArticuloService;
+import org.bootcamp.service.PrestamoService;
 import org.bootcamp.service.UserService;
 import org.bootcamp.service.impl.AlmacenArticuloServiceImpl;
+import org.bootcamp.service.impl.PrestamoServiceImpl;
 import org.bootcamp.service.impl.UserServiceImpl;
 import org.bootcamp.utils.DbConnection;
 
@@ -23,6 +23,7 @@ public class Main {
 
         AlmacenArticuloService almacenArticuloService = new AlmacenArticuloServiceImpl(new AlmacenArticuloDaoImpl(connection));
         UserService userService = new UserServiceImpl(new UserDaoImpl(connection));
+        PrestamoService prestamoService = new PrestamoServiceImpl(new PrestamoDaoImpl(connection));
 
         Scanner sc = new Scanner(System.in);
         int optionSystem = 0;
@@ -82,7 +83,7 @@ public class Main {
                             idUser = sc.nextInt();
 
                             User userEdit = userService.findUserById(idUser);
-                            if (userEdit.getUserID() == 0){
+                            if (userEdit == null || userEdit.getUserID() == 0){
                                 System.out.println("Ingrese un usuario valido");
                                 break;
                             }
@@ -101,8 +102,13 @@ public class Main {
                             idUser = sc.nextInt();
 
                             User userDelete = userService.findUserById(idUser);
-                            if (userDelete.getUserID() == 0){
+                            if (userDelete == null || userDelete.getUserID() == 0){
                                 System.out.println("Ingrese un usuario valido");
+                                break;
+                            }
+                            List<Prestamo> prestamoRevisionUser = prestamoService.getLoansByUserId(userDelete.getUserID());
+                            if (!prestamoRevisionUser.isEmpty()){
+                                System.out.println("El usuario tiene articulos prestados, primero debe efectuar la devolucion");
                                 break;
                             }
                             userService.deleteUser(userDelete.getUserID());
@@ -222,6 +228,11 @@ public class Main {
                                 System.out.println("Ingrese un articulo valido");
                                 break;
                             }
+                            List<Prestamo> prestamoRevision = prestamoService.getLoansByArtId(articuloDelete.getArticuloID());
+                            if (!prestamoRevision.isEmpty()){
+                                System.out.println("El articulo esta prestado, primero efectue la devolucion por favor");
+                                break;
+                            }
                             almacenArticuloService.deleteArt(articuloDelete.getArticuloID());
                             break;
                         default:
@@ -235,6 +246,8 @@ public class Main {
                     System.out.println("--------------------------------------------");
                     System.out.println("Ingrese 1 para prestar un articulo");
                     System.out.println("Ingrese 2 para devolver un articulo");
+                    System.out.println("Ingrese 3 para ver el historial de prestamos por usuario");
+                    System.out.println("Ingrese 4 para ver el historial de prestamos por articulo");
                     System.out.println("--------------------------------------------");
                     internalOption = sc.nextInt();
                     switch (internalOption) {
@@ -243,7 +256,7 @@ public class Main {
                             idUser = sc.nextInt();
 
                             User userFind = userService.findUserById(idUser);
-                            if (userFind.getUserID() == 0){
+                            if (userFind == null || userFind.getUserID() == 0){
                                 System.out.println("Ingrese un usuario valido");
                                 break;
                             }
@@ -252,23 +265,27 @@ public class Main {
                             idArt = sc.nextInt();
 
                             AlmacenArticulo articuloFind = almacenArticuloService.findArtById(idArt);
-                            if (articuloFind.getArticuloID() == 0){
+                            if (articuloFind == null || articuloFind.getArticuloID() == 0){
                                 System.out.println("Ingrese un articulo valido");
                                 break;
                             }
                             if (articuloFind.getIsLoaned()){
-                                System.out.println("El articulo ya esta prestado a otro usuario");
+                                System.out.println("El articulo ya esta prestado");
                                 break;
                             }
-                            almacenArticuloService.loanArt(idArt, idUser);
+                            prestamoService.loanArt(idArt, idUser);
                             break;
                         case 2:
                             System.out.println("Ingrese el id del usuario");
                             idUser = sc.nextInt();
 
                             User userFound = userService.findUserById(idUser);
-                            if (userFound.getUserID() == 0){
+                            if (userFound == null || userFound.getUserID() == 0){
                                 System.out.println("Ingrese un usuario valido");
+                                break;
+                            }
+                            if(userFound.getArticuloList().isEmpty()){
+                                System.out.println("El usuario no tiene articulos prestados");
                                 break;
                             }
 
@@ -276,7 +293,7 @@ public class Main {
                             idArt = sc.nextInt();
 
                             AlmacenArticulo articuloFound = almacenArticuloService.findArtById(idArt);
-                            if (articuloFound.getArticuloID() == 0){
+                            if (articuloFound == null || articuloFound.getArticuloID() == 0){
                                 System.out.println("Ingrese un articulo valido");
                                 break;
                             }
@@ -285,7 +302,44 @@ public class Main {
                                 System.out.println("El articulo no esta prestado");
                                 break;
                             }
-                            almacenArticuloService.returnArt(idArt, idUser);
+                            prestamoService.returnArt(idArt, idUser);
+                            break;
+                        case 3:
+                            System.out.println("Ingrese el id del usuario");
+                            idUser = sc.nextInt();
+
+                            User userHistory = userService.findUserById(idUser);
+                            if (userHistory == null || userHistory.getUserID() == 0){
+                                System.out.println("Ingrese un usuario valido");
+                                break;
+                            }
+
+                            List<Prestamo> allPrestamos = prestamoService.getAllLoansByUserId(idUser);
+                            if (allPrestamos.isEmpty()){
+                                System.out.println("El usuario no tiene historial de prestamos");
+                                break;
+                            }
+                            for (Prestamo prestamo : allPrestamos) {
+                                prestamo.showPrestamoDetails();
+                            }
+                            break;
+                        case 4:
+                            System.out.println("Ingrese el id del articulo");
+                            idArt = sc.nextInt();
+
+                            AlmacenArticulo articuloHistory = almacenArticuloService.findArtById(idArt);
+                            if (articuloHistory == null || articuloHistory.getArticuloID() == 0){
+                                System.out.println("Ingrese un articulo valido");
+                                break;
+                            }
+                            List<Prestamo> allHistoryPrestamos = prestamoService.getAllLoansByUserId(idArt);
+                            if (allHistoryPrestamos.isEmpty()){
+                                System.out.println("El articulo no tiene historial de prestamos");
+                                break;
+                            }
+                            for (Prestamo prestamo : allHistoryPrestamos) {
+                                prestamo.showPrestamoDetails();
+                            }
                             break;
                         default:
                             System.out.println("Ingrese una opcion valida");

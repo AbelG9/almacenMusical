@@ -34,16 +34,6 @@ public class AlmacenArticuloServiceImpl implements AlmacenArticuloService {
     }
 
     @Override
-    public void loanArt(int articuloID, int userID) {
-        almacenArticuloDao.loanArt(articuloID, userID);
-    }
-
-    @Override
-    public void returnArt(int articuloID, int userID) {
-        almacenArticuloDao.returnArt(articuloID, userID);
-    }
-
-    @Override
     public AlmacenArticulo findArtById(int articuloID) {
         return almacenArticuloDao.findArtById(articuloID);
     }

@@ -13,9 +13,5 @@ public interface AlmacenArticuloService {
 
     public void deleteArt(int id);
 
-    public void loanArt(int articuloID, int userID);
-
-    public void returnArt(int articuloID, int userID);
-
     public AlmacenArticulo findArtById(int articuloID);
 }

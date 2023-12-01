@@ -27,13 +27,15 @@ create table if not exists usuarios(
 );
 
 create table if not exists prestamos(
-	prestamo_id serial PRIMARY KEY,
-	usuario integer,
-	articulo integer,
-	estado integer,
+    prestamo_id serial PRIMARY KEY,
+    usuario integer,
+    articulo integer,
+    fecha_prestamo DATE NULL,
+    fecha_devolucion DATE NULL,
+    estado integer,
 
-	foreign key(usuario) references usuarios(usuario_id),
-	foreign key(articulo) references articulos(articulo_id)
+    foreign key(usuario) references usuarios(usuario_id),
+    foreign key(articulo) references articulos(articulo_id)
 );
 
 INSERT INTO articulos (nombre, isLoaned, desDuenio, tipoArticulo, estado)

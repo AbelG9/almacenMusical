@@ -23,12 +23,11 @@ public class User {
         System.out.println("Nombre:" + nombre);
         System.out.println("- - - - - - - - - - - - -");
         if(!this.articuloList.isEmpty()){
-            System.out.println("Articulos rentados :");
+            System.out.println("Tiene " + this.articuloList.size() + " articulos prestados :");
+            System.out.println("--------------------");
             int contador = 1;
             for (AlmacenArticulo articulo: this.articuloList){
-                System.out.println("----------");
                 System.out.println("Articulo " + contador + " :");
-                System.out.println("----------");
                 articulo.showDetails();
                 contador++;
             }
