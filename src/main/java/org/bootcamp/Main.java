@@ -4,15 +4,19 @@ import org.bootcamp.dao.AlmacenArticuloDao;
 import org.bootcamp.dao.impl.AlmacenArticuloDaoImpl;
 import org.bootcamp.dao.impl.InstrumentoDaoImpl;
 import org.bootcamp.dao.impl.PartituraDaoImpl;
+import org.bootcamp.dao.impl.UserDaoImpl;
 import org.bootcamp.model.AlmacenArticulo;
 import org.bootcamp.model.Instrumento;
 import org.bootcamp.model.Partitura;
+import org.bootcamp.model.User;
 import org.bootcamp.service.AlmacenArticuloService;
 import org.bootcamp.service.InstrumentoService;
 import org.bootcamp.service.PartituraService;
+import org.bootcamp.service.UserService;
 import org.bootcamp.service.impl.AlmacenArticuloServiceImpl;
 import org.bootcamp.service.impl.InstrumentoServiceImpl;
 import org.bootcamp.service.impl.PartituraServiceImpl;
+import org.bootcamp.service.impl.UserServiceImpl;
 import org.bootcamp.utils.DbConnection;
 
 import java.sql.Connection;
@@ -27,6 +31,7 @@ public class Main {
         AlmacenArticuloService almacenArticuloService = new AlmacenArticuloServiceImpl(new AlmacenArticuloDaoImpl(connection));
         InstrumentoService instrumentoService = new InstrumentoServiceImpl(new InstrumentoDaoImpl(connection));
         PartituraService partituraService = new PartituraServiceImpl(new PartituraDaoImpl(connection));
+        UserService userService = new UserServiceImpl(new UserDaoImpl(connection));
 
         Scanner sc = new Scanner(System.in);
 
@@ -36,8 +41,9 @@ public class Main {
             System.out.println("Bienvenido al Sistema de Almacen ");
             System.out.println("--------------------------------------------");
             System.out.println("Ingrese 1 para ver los articulos disponibles");
-            System.out.println("Ingrese 2 para añadir nuevos artículos al almacen");
-            System.out.println("Ingrese 3 para prestar un articulo");
+            System.out.println("Ingrese 2 para ver los usuarios disponibles");
+            System.out.println("Ingrese 3 para añadir nuevos artículos al almacen");
+            System.out.println("Ingrese 4 para prestar un articulo");
             System.out.println("--------------------------------------------");
 
             int option = sc.nextInt();
@@ -49,6 +55,12 @@ public class Main {
                     }
                     break;
                 case 2:
+                    List<User> users = userService.showAllUsers();
+                    for (User user: users){
+                        user.showUserDetails();
+                    }
+                    break;
+                case 3:
                     System.out.println("Ingrese el tipo de articulo (1 para Instrumento, 2 para Partitura)");
                     int tipo = sc.nextInt();
                     switch (tipo){
@@ -79,7 +91,7 @@ public class Main {
                             break;
                     }
                     break;
-                case 3:
+                case 4:
                     System.out.println("Ingrese el id del usuario");
                     int idUsuario = sc.nextInt();
                     System.out.println("Ingrese el id del articulo");
