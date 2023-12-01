@@ -44,8 +44,9 @@ public class Main {
             System.out.println("Ingrese 2 para ver los usuarios disponibles");
             System.out.println("Ingrese 3 para ver la informacion de un articulo");
             System.out.println("Ingrese 4 para ver la informacion de un usuario");
-            System.out.println("Ingrese 5 para añadir un nuevo artículo al almacen");
-            System.out.println("Ingrese 6 para prestar un articulo");
+            System.out.println("Ingrese 5 para agregar un nuevo artículo");
+            System.out.println("Ingrese 6 para agregar un nuevo usuario");
+            System.out.println("Ingrese 7 para prestar un articulo");
             System.out.println("--------------------------------------------");
 
             int option = sc.nextInt();
@@ -116,6 +117,14 @@ public class Main {
                     }
                     break;
                 case 6:
+                    User userSave = new User();
+                    System.out.println("Ingrese el nombre del usuario");
+                    String nombre = sc.next();
+
+                    userSave.setNombre(nombre);
+                    userService.addUser(userSave);
+                    break;
+                case 7:
                     System.out.println("Ingrese el id del usuario");
                     idUsuario = sc.nextInt();
                     System.out.println("Ingrese el id del articulo");

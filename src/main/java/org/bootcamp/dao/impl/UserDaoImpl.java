@@ -21,6 +21,17 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addUser(User user) {
+        try{
+            String sql = "INSERT INTO usuarios (nombre, estado) VALUES (?, ?)";
+            PreparedStatement psmt = connection.prepareStatement(sql);
+            psmt.setString(1, user.getNombre());
+            psmt.setInt(2, 1);
+            psmt.executeUpdate();
+            System.out.println("Usuario ingresado correctamente");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
